@@ -1,0 +1,23 @@
+ <%- include('../base/nav')%>
+
+    <div class="container mt-2">
+        <div class="list-group">
+
+        <% blogs.forEach(data => { %>
+         
+          <a href="/blog/<%=data._id%>" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><%= data.title%></h5>
+              <small>3 days ago</small>
+            </div>
+            <p class="mb-1"><%= data.body%></p>
+            <small><%= data.author%></small>
+          </a>
+
+          <% }) %> 
+            
+          </div>
+    </div>
+
+
+    <%- include('../base/footer')%>

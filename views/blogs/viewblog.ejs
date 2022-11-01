@@ -1,0 +1,40 @@
+
+
+    <%- include('../base/nav')%>
+
+        <div class="container mt-5 ">
+            <div class="card text mb-3">
+                <div class="card-header d-flex h3 ">
+                    <%= title%>
+                        <a href="" class="del" data-del="<% _id%>" style="margin-left:auto;">
+                            <img src="/icons/trash.svg" alt="delete">
+                               </a>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <%= body%>
+                    </p>
+                    <p class="card-text">-<%= author%></p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+        <script>
+            console.log('not clicked')
+            const trashcan = document.querySelector('a.del');
+            trashcan.addEventListener('click',(e)=>{
+                console.log('clicked')
+                path = '/blog/<%= _id%>';
+                fetch(path,{
+                    method:'DELETE'
+                })
+                .then(data => data.json())
+                .then(data => window.location.href= data.redirect)
+                .catch(err => console.log(err));
+            });
+
+        </script>
+
+     <%- include('../base/footer')%>
