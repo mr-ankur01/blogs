@@ -9,6 +9,7 @@ const blogsrouters = require('./routers/blogsRouters')
 const authrouters = require('./routers/auth')
 const adminRouters = require('./routers/admin')
 const { requireAuth, checkUser } = require('./middlewares/authMid')
+const { requireAdmin } = require('./middlewares/adminMid')
 
 
 const session = require('express-session');
@@ -55,7 +56,7 @@ app.get('/', requireAuth, (req, res) => {
 
 app.use('/blog', blogsrouters);
 app.use('/auth', authrouters);
-app.use('/admin', adminRouters);
+app.use('/admin',requireAdmin, adminRouters);
 
 app.use((req, res) => {
     res.status(404).render('blogs/404');
