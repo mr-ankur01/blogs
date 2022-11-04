@@ -12,6 +12,7 @@ const { requireAuth, checkUser } = require('./middlewares/authMid')
 const { requireAdmin } = require('./middlewares/adminMid')
 
 
+
 const session = require('express-session');
 const flash = require('connect-flash');
 
@@ -46,7 +47,7 @@ app.use(cookieParser())
 
 app.use('*',checkUser)
 
-app.get('/', requireAuth, (req, res) => {
+app.get('/', requireAuth,(req, res) => {
     Blogdb.find()
         .then(blogs => res.render('blogs/index', { blogs }))
         .catch(err => console.log(err));
@@ -56,7 +57,7 @@ app.get('/', requireAuth, (req, res) => {
 
 app.use('/blog', blogsrouters);
 app.use('/auth', authrouters);
-app.use('/admin',requireAdmin, adminRouters);
+app.use('/admin',adminRouters);
 
 app.use((req, res) => {
     res.status(404).render('blogs/404');

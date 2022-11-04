@@ -1,19 +1,30 @@
 const Admindb = require('../models/admindb');
 const Userdb = require('../models/authdb');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
+
+const expiresIn = 3 * 24 * 60 * 60
+const createToken = id => {
+    const token = jwt.sign({ id }, 'hi123', { expiresIn })
+    return token
+}
+
+
 
 const login = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     Admindb.findOne({ username })
         .then(result => {
-            if (result == null) {
+            if (result==null) {
                 req.flash('error', 'Error! username not found!')
                 res.redirect("/admin/login")
             }
             else {
                 const comPass = bcrypt.compareSync(password, result.password);
                 if (comPass) {
+                    const token = createToken(result.id)
+                    res.cookie('jwt2', token, { httpOnly:true , maxAge: expiresIn * 1000 })
                     res.redirect('/admin');
 
                 } else {
@@ -77,11 +88,11 @@ const usersDel = async (req, res) => {
         const id = req.params.id;
         const del = await Userdb.findByIdAndDelete(id);
         if (del)
-            res.status(201).json({redirect:'/admin/users'})
-    }catch(err){
+            res.status(201).json({ redirect: '/admin/users' })
+    } catch (err) {
         console.log(err)
     }
-    
+
 }
 
 

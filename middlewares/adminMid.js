@@ -4,22 +4,19 @@ const Admindb = require('../models/admindb')
 
 const requireAdmin = (req, res, next) => {
     try {
-        const token = req.cookies.jwt
+        const token = req.cookies.jwt2
         if (token) {
-             jwt.verify(token, 'hi123',async (err, decodedToken) => {
+             jwt.verify(token, 'hi123', async (err, decodedToken) => {
                 if (err) {
-                    res.redirect('/auth/login')
+                    res.redirect('/')
                 } else {
                     const admin = await Admindb.findById(decodedToken.id)
-                    if(admin){
                         res.locals.user = admin.username
                         next()
-                    }else{
-                        res.redirect('/auth/login')
                     }
-                    next()
-                }
             })
+        }else{
+            res.redirect('/')
         }
     } catch (err) {
         next()

@@ -5,7 +5,7 @@ const authCont = require('../controllers/authController');
 routers.get('/login', (req, res) => {
     res.render('auth/login');
 });
-
+routers.get('/logout',authCont.logout)
 routers.post('/login', authCont.logindata);
 
 routers.get('/sign', (req, res) => {

@@ -1,10 +1,10 @@
 const express = require('express');
 const routers = express.Router();
 const adminCon = require('../controllers/adminController');
+const { requireAdmin } = require('../middlewares/adminMid')
 
 
-
-routers.get('/',(req,res)=>{
+routers.get('/',requireAdmin,(req,res)=>{
     res.render('admin/admin')
 });
 
@@ -16,8 +16,8 @@ routers.get('/sign',(req,res)=>{
     res.render('admin/sign')
 });
 
-routers.get('/users',adminCon.users);
-routers.delete('/users/:id',adminCon.usersDel);
+routers.get('/users',requireAdmin,adminCon.users);
+routers.delete('/users/:id',requireAdmin,adminCon.usersDel);
 
 routers.post('/login',adminCon.login);
 routers.post('/sign',adminCon.sign);

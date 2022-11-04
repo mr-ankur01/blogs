@@ -63,7 +63,13 @@ const signData = async (req, res) => {
     }
 }
 
+const logout = (req,res)=>{
+    res.cookie('jwt','',{maxAge:0})
+    res.redirect('/auth/login')
+}
+
 module.exports = {
     logindata,
     signData,
+    logout,
 }
