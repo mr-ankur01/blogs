@@ -55,7 +55,7 @@ app.get('/', requireAuth,reqRole(['user','admin']),(req, res) => {
 
 app.use('/blog', blogsrouters);
 app.use('/auth', authrouters);
-app.use('/admin', adminRouters);
+app.use('/admin',adminRouters);
 
 app.use((req, res) => {
     res.status(404).render('blogs/404');
