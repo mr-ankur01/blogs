@@ -8,7 +8,7 @@ const Blogdb = require('./models/blogdb');
 const blogsrouters = require('./routers/blogsRouters')
 const authrouters = require('./routers/auth')
 const adminRouters = require('./routers/admin')
-const { requireAuth, checkUser } = require('./middlewares/authMid')
+const { requireAuth, checkUser , reqRole } = require('./middlewares/authMid')
 
 
 const session = require('express-session');
@@ -45,7 +45,7 @@ app.use(cookieParser())
 
 app.use('*',checkUser)
 
-app.get('/', requireAuth, (req, res) => {
+app.get('/', requireAuth,reqRole(['user','admin']),(req, res) => {
     Blogdb.find()
         .then(blogs => res.render('blogs/index', { blogs }))
         .catch(err => console.log(err));

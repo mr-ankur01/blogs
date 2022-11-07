@@ -38,6 +38,7 @@ const logindata = async (req, res) => {
         const user = await Authdb.login(email, password)
         const token = create_token(user._id)
         res.cookie('jwt', token, { httpOnly: true, maxAge: expiresIn * 1000 })
+        res.cookie('role', 'user', { httpOnly: true, maxAge: expiresIn * 1000 })
         res.redirect('/')
 
     } catch (err) {

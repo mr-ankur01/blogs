@@ -41,7 +41,19 @@ const checkUser = (req, res, next) => {
 
 }
 
+const reqRole = (permissions)=>{
+    return (req,res,next)=>{
+        const role = req.cookies.role
+        if(permissions.includes(role)){
+            next()
+        }else{
+            res.redirect('/auth/login')
+        }
+    }
+}
+
 module.exports = {
     requireAuth,
     checkUser,
+    reqRole
 }
