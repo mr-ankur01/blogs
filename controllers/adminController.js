@@ -1,6 +1,13 @@
 const Admindb = require('../models/admindb');
 const Userdb = require('../models/authdb');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const expiresIn = 3 * 24 * 60 * 60
+const create_token = id => {
+    const token = jwt.sign({ id }, 'hi123', { expiresIn })
+    return token
+}
 
 const login = (req, res) => {
     const username = req.body.username;
@@ -14,6 +21,9 @@ const login = (req, res) => {
             else {
                 const comPass = bcrypt.compareSync(password, result.password);
                 if (comPass) {
+                    const token = create_token(result._id)
+                    res.cookie('jwt', token, { httpOly: true, maxAge: expiresIn * 1000 })
+                    res.cookie('role', 'admin', { httpOly: true, maxAge: expiresIn * 1000 })
                     res.redirect('/admin');
 
                 } else {
@@ -77,11 +87,11 @@ const usersDel = async (req, res) => {
         const id = req.params.id;
         const del = await Userdb.findByIdAndDelete(id);
         if (del)
-            res.status(201).json({redirect:'/admin/users'})
-    }catch(err){
+            res.status(201).json({ redirect: '/admin/users' })
+    } catch (err) {
         console.log(err)
     }
-    
+
 }
 
 
