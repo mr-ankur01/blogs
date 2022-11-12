@@ -5,7 +5,7 @@ const {requireAuth} = require('../middlewares/authMid')
 
 
 
-routers.get('/',requireAuth,(req,res)=>{
+routers.get('/',requireAuth('admin'),(req,res)=>{
     res.render('admin/admin')
 });
 
@@ -17,7 +17,7 @@ routers.get('/sign',(req,res)=>{
     res.render('admin/sign')
 });
 
-routers.get('/users',requireAuth,adminCon.users);
+routers.get('/users',requireAuth('admin'),adminCon.users);
 routers.delete('/users/:id',adminCon.usersDel);
 
 routers.post('/login',adminCon.login);

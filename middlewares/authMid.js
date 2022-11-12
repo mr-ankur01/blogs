@@ -11,7 +11,7 @@ const checkUser = (req, res, next) => {
                 next()
             } else {
                 const user = await Authdb.findById(decodedToken.id)
-                if (user){
+                if (user) {
                     res.locals.user = user.email;
                     next()
                 }
@@ -28,29 +28,33 @@ const checkUser = (req, res, next) => {
     }
 }
 
-const requireAuth = (req, res, next) => {
-    const token = req.cookies.jwt;
-    const role = req.cookies.role;
-    console.log(token,role)
-    if (token) {
-        jwt.verify(token, 'hi123', (err, decodedToken) => {
-            if (err) {
-                console.log(err)
+const requireAuth = Role => {
+    return (req, res, next) => {
+        const token = req.cookies.jwt;
+        const role = req.cookies.role;
+        if (Role.includes(role)) {
+            if (token) {
+                jwt.verify(token, 'hi123', (err, decodedToken) => {
+                    if (err){
+                        req.flash('error','you dont have any permissions')
+                        res.redirect('/auth/login')
+                    }
+                    else
+                        next()
+                })
+            }
+            else{
+                req.flash('error','you dont have any permissions')
                 res.redirect('/auth/login')
             }
-            else {
-                if(role === 'admin'|'user')
-                next()
-                else
-                res.redirect('/auth/login')
-            }
-        })
-    } else {
-        res.redirect('/auth/login')
+        }
+        else{
+            req.flash('error','you dont have any permissions')
+            res.redirect('/auth/login')
+        }
     }
-
-
 }
+
 
 
 module.exports = {

@@ -45,7 +45,7 @@ app.use(cookieParser())
 
 app.use('*',checkUser)
 
-app.get('/',requireAuth,(req, res) => {
+app.get('/',requireAuth(['admin','user']),(req, res) => {
     Blogdb.find()
         .then(blogs => res.render('blogs/index', { blogs }))
         .catch(err => console.log(err));
