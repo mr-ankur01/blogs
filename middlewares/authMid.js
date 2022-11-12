@@ -32,26 +32,25 @@ const requireAuth = Role => {
     return (req, res, next) => {
         const token = req.cookies.jwt;
         const role = req.cookies.role;
-        if (Role.includes(role)) {
+       
             if (token) {
                 jwt.verify(token, 'hi123', (err, decodedToken) => {
                     if (err){
-                        req.flash('error','you dont have any permissions')
                         res.redirect('/auth/login')
                     }
-                    else
+                    else if (Role.includes(role)) {
                         next()
+                      }  
+                      else{
+                            req.flash('error','you dont have any permissions')
+                            res.redirect('/auth/login')
+                        }
                 })
             }
             else{
-                req.flash('error','you dont have any permissions')
                 res.redirect('/auth/login')
             }
-        }
-        else{
-            req.flash('error','you dont have any permissions')
-            res.redirect('/auth/login')
-        }
+       
     }
 }
 
