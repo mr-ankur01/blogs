@@ -7,6 +7,7 @@ const blogspage = (req,res)=>{
 }
 
 const createblogs =(req,res)=>{
+    console.log(req.body)
     const Blog = new Blogdb(req.body)
     Blog.save()
     .then((data)=>res.redirect('/'))

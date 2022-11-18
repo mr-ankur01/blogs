@@ -43,19 +43,26 @@ app.use(function (req, res, next) {
 
 app.use(cookieParser())
 
-app.use('*',checkUser)
+app.use('*', checkUser)
 
-app.get('/',requireAuth(['admin','user']),(req, res) => {
-    Blogdb.find()
-        .then(blogs => res.render('blogs/index', { blogs }))
-        .catch(err => console.log(err));
+app.get('/', requireAuth(['admin', 'user']), async (req, res) => {
+    try {
+        let blogs = await Blogdb.find()
+        blogs.forEach(blog => {
+            let {body} = blog
+            blog.body = body.slice(0,310)
+        });
+        res.render('blogs/index', { blogs })
+    } catch (err) {
+        console.log(err);
+    }
 
 });
 
 
-app.use('/blog', blogsrouters);
+app.use('/blog', requireAuth(['admin', 'user']), blogsrouters);
 app.use('/auth', authrouters);
-app.use('/admin',adminRouters);
+app.use('/admin', adminRouters);
 
 app.use((req, res) => {
     res.status(404).render('blogs/404');

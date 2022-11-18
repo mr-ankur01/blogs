@@ -22,11 +22,12 @@
 
 
         <script>
-            console.log('not clicked')
             const trashcan = document.querySelector('a.del');
+
             trashcan.addEventListener('click',(e)=>{
-                console.log('clicked')
-                path = '/blog/<%= _id%>';
+
+                const path = '/blog/<%= _id%>';
+
                 fetch(path,{
                     method:'DELETE'
                 })

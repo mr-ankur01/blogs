@@ -4,17 +4,14 @@
 
         <div class="container mt-5">
             <form action="/blog" method="post">
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Author Name</label>
-                    <input type="text" name="author" class="form-control" id="exampleFormControlInput1">
-                </div>
+                <input type="hidden" value="<%= user %>" name="author">
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Title</label>
-                    <input type="text" name="title" class="form-control" id="exampleFormControlInput1">
+                    <input type="text" name="title" class="form-control" id="exampleFormControlInput1" required>
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Body</label>
-                    <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3"required></textarea>
                 </div>
                 <div class="d-flex">
                     <button type="submit" class="btn btn-dark m-auto px-5">Submit</button>
